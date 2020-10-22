@@ -96,27 +96,23 @@ public class BeatBoxFragment extends Fragment {
         mBinding.recyclerViewBeatBox.setAdapter(adapter);
     }
 
-    private class SoundHolder extends RecyclerView.ViewHolder {
+    public class SoundHolder extends RecyclerView.ViewHolder {
 
         private ListItemSoundBinding mListItemSoundBinding;
-        private Sound mSound;
 
         public SoundHolder(ListItemSoundBinding listItemSoundBinding) {
             super(listItemSoundBinding.getRoot());
 
             mListItemSoundBinding = listItemSoundBinding;
+            mListItemSoundBinding.setSoundHolder(this);
+        }
 
-            mListItemSoundBinding.buttonBeatBox.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mRepository.play(mSound);
-                }
-            });
+        public void play(Sound sound) {
+            mRepository.play(sound);
         }
 
         public void bindSound(Sound sound) {
-            mSound = sound;
-            mListItemSoundBinding.buttonBeatBox.setText(mSound.getName());
+            mListItemSoundBinding.setSound(sound);
         }
     }
 
