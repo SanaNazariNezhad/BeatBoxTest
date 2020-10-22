@@ -3,6 +3,8 @@ package org.maktab.beatbox.controller.fragment;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +16,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import org.maktab.beatbox.R;
+import org.maktab.beatbox.databinding.FragmentBeatBoxBinding;
+import org.maktab.beatbox.databinding.ListItemSoundBinding;
 import org.maktab.beatbox.model.Sound;
 import org.maktab.beatbox.repository.BeatBoxRepository;
 
@@ -22,8 +26,9 @@ import java.util.List;
 public class BeatBoxFragment extends Fragment {
 
     public static final String TAG = "BeatBoxFragment";
-    private RecyclerView mRecyclerView;
+//    private RecyclerView mRecyclerView;
     private BeatBoxRepository mRepository;
+    private FragmentBeatBoxBinding mBinding;
 
     public BeatBoxFragment() {
         // Required empty public constructor
@@ -60,13 +65,17 @@ public class BeatBoxFragment extends Fragment {
         Log.d(TAG, "onCreateView");
 
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_beat_box, container, false);
+        mBinding = DataBindingUtil.inflate(
+                inflater,
+                R.layout.fragment_beat_box,
+                container,
+                false);
 
-        findViews(view);
+//        findViews(view);
         initViews();
         setupAdapter();
 
-        return view;
+        return mBinding.getRoot();
     }
 
     @Override
@@ -76,30 +85,28 @@ public class BeatBoxFragment extends Fragment {
         Log.d(TAG, "onDestroyView");
     }
 
-    private void findViews(View view) {
-        mRecyclerView = view.findViewById(R.id.recycler_view_beat_box);
-    }
-
     private void initViews() {
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        mBinding.recyclerViewBeatBox
+                .setLayoutManager(new GridLayoutManager(getContext(), 3));
     }
 
     private void setupAdapter() {
         List<Sound> sounds = mRepository.getSounds();
         SoundAdapter adapter = new SoundAdapter(sounds);
-        mRecyclerView.setAdapter(adapter);
+        mBinding.recyclerViewBeatBox.setAdapter(adapter);
     }
 
     private class SoundHolder extends RecyclerView.ViewHolder {
 
-        private Button mButton;
+        private ListItemSoundBinding mListItemSoundBinding;
         private Sound mSound;
 
-        public SoundHolder(@NonNull View itemView) {
-            super(itemView);
+        public SoundHolder(ListItemSoundBinding listItemSoundBinding) {
+            super(listItemSoundBinding.getRoot());
 
-            mButton = itemView.findViewById(R.id.button_beat_box);
-            mButton.setOnClickListener(new View.OnClickListener() {
+            mListItemSoundBinding = listItemSoundBinding;
+
+            mListItemSoundBinding.buttonBeatBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mRepository.play(mSound);
@@ -109,7 +116,7 @@ public class BeatBoxFragment extends Fragment {
 
         public void bindSound(Sound sound) {
             mSound = sound;
-            mButton.setText(mSound.getName());
+            mListItemSoundBinding.buttonBeatBox.setText(mSound.getName());
         }
     }
 
@@ -132,10 +139,13 @@ public class BeatBoxFragment extends Fragment {
         @NonNull
         @Override
         public SoundHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(getContext())
-                    .inflate(R.layout.list_item_sound, parent, false);
+            ListItemSoundBinding binding = DataBindingUtil.inflate(
+                    LayoutInflater.from(getContext()),
+                    R.layout.list_item_sound,
+                    parent,
+                    false);
 
-            return new SoundHolder(view);
+            return new SoundHolder(binding);
         }
 
         @Override
