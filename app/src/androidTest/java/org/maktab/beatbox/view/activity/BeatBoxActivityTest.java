@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.maktab.beatbox.R;
 
 import static org.junit.Assert.*;
 
@@ -25,14 +26,12 @@ public class BeatBoxActivityTest {
             new ActivityScenarioRule<>(BeatBoxActivity.class);
 
     @Test
-    public void showsFirstFileName() {
-        Espresso.onView(ViewMatchers.withText("65_cjipie"))
+    public void swipe() {
+        Espresso.onView(ViewMatchers.withId(R.id.recycler_view_beat_box))
+                .perform(ViewActions.swipeUp());
+        Espresso.onView(ViewMatchers.withText("86_oa-h"))
                 .check(ViewAssertions.matches(Matchers.anything()));
-    }
-
-    @Test
-    public void clickTheFirstFile() {
-        Espresso.onView(ViewMatchers.withText("65_cjipie"))
+        Espresso.onView(ViewMatchers.withText("86_oa-h"))
                 .perform(ViewActions.click());
     }
 }
