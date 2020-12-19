@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.maktab.beatbox.R;
 import org.maktab.beatbox.databinding.ListItemSoundBinding;
 import org.maktab.beatbox.model.Sound;
+import org.maktab.beatbox.repository.BeatBoxRepository;
 import org.maktab.beatbox.viewmodel.SoundViewModel;
 
 import java.util.List;
@@ -64,7 +65,10 @@ public class SoundAdapter extends RecyclerView.Adapter<SoundAdapter.SoundHolder>
             super(listItemSoundBinding.getRoot());
 
             mListItemSoundBinding = listItemSoundBinding;
-            mListItemSoundBinding.setSoundViewModel(new SoundViewModel(mContext));
+            //this is violating the single responsibilities and it's wrong.
+            //we just did this for test
+            BeatBoxRepository repository = BeatBoxRepository.getInstance(mContext);
+            mListItemSoundBinding.setSoundViewModel(new SoundViewModel(repository));
         }
 
         public void bindSound(Sound sound) {

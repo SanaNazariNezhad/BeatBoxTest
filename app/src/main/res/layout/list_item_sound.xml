@@ -19,7 +19,7 @@
             android:layout_gravity="center"
             style="@style/BeatBoxButtonStrong"
             android:text="@{soundViewModel.title}"
-            android:onClick="@{() -> soundViewModel.playSound()}">
+            android:onClick="@{() -> soundViewModel.onPlayButtonClicked()}">
         </Button>
     </FrameLayout>
 </layout>

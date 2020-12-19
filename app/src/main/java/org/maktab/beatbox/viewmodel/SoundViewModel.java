@@ -10,6 +10,7 @@ import org.maktab.beatbox.model.Sound;
 import org.maktab.beatbox.repository.BeatBoxRepository;
 
 public class SoundViewModel extends BaseObservable {
+
     private Sound mSound;
     private BeatBoxRepository mRepository;
 
@@ -23,8 +24,8 @@ public class SoundViewModel extends BaseObservable {
         notifyPropertyChanged(BR.title);
     }
 
-    public SoundViewModel(Context context) {
-        mRepository = BeatBoxRepository.getInstance(context);
+    public SoundViewModel(BeatBoxRepository repository) {
+        mRepository = repository;
     }
 
     @Bindable
@@ -32,7 +33,7 @@ public class SoundViewModel extends BaseObservable {
         return mSound.getName();
     }
 
-    public void playSound() {
+    public void onPlayButtonClicked() {
         mRepository.play(mSound);
     }
 }

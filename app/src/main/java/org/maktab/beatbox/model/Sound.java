@@ -41,7 +41,7 @@ public class Sound {
         */
 
         mAssetPath = assetPath;
-        String[] sections = assetPath.split(File.separator);
+        String[] sections = assetPath.split("/");
         String fileNameWithExtension = sections[sections.length - 1];
         int lastDotIndex = fileNameWithExtension.lastIndexOf(".");
 
